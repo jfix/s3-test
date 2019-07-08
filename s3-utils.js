@@ -1,5 +1,6 @@
 require('dotenv').config()
 const AWS = require('aws-sdk')
+const fs= require('fs')
 const md5 = require('md5')
 const s3 = new AWS.S3()
 
@@ -7,6 +8,18 @@ const bucketName = process.env.BUCKET_NAME
 
 const hashFilename = (fileName) => {
     return `${md5(fileName.toLowerCase())}.pdf`
+}
+
+const fileExists = async (fileName) => {
+    let data
+    try {
+        const { ContentLength } = await getObjectHead(fileName)
+        data = ContentLength > 0
+    } catch (err) {
+        data = !(err.statusCode === 404)
+    } finally {
+        return data
+    }
 }
 
 const getObjectHead = async (fileName) => {
@@ -18,7 +31,8 @@ const getObjectHead = async (fileName) => {
         const data = await s3.headObject(params).promise()
         return data
     } catch (err) {
-        console.log(err, err.stack)
+        // console.log(err.statusCode)
+        return err.statusCode
     }
 }
 
@@ -50,6 +64,7 @@ const setBucketLifeCycleConfiguration = async () => {
 }
 
 const putObject = async (fileName) => {
+    console.log(`we are in putObject for ${fileName}.`)
     try {
         const params = {
             Bucket: bucketName, 
@@ -57,12 +72,14 @@ const putObject = async (fileName) => {
             Key: hashFilename(fileName)
         }
         const data = await s3.putObject(params).promise()
+        console.log(`we have uploaded ${hashFilename(fileName)}.`)
         return data
     } catch (err) {
-        console.log(err.statusCode)
+        console.log(`Error in putObject: ${err}`)
     }
 }
 
+module.exports.fileExists = fileExists
 module.exports.putObject = putObject
-module.exports.getObjectHead = getObjectHead
+// module.exports.getObjectHead = getObjectHead
 module.exports.setBucketLifeCycleConfiguration = setBucketLifeCycleConfiguration
