@@ -81,5 +81,4 @@ const putObject = async (fileName) => {
 
 module.exports.fileExists = fileExists
 module.exports.putObject = putObject
-// module.exports.getObjectHead = getObjectHead
 module.exports.setBucketLifeCycleConfiguration = setBucketLifeCycleConfiguration
