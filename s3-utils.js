@@ -5,9 +5,15 @@ const md5 = require('md5')
 const s3 = new AWS.S3()
 
 const bucketName = process.env.BUCKET_NAME
+const region = process.env.AWS_REGION
 
 const hashFilename = (fileName) => {
     return `${md5(fileName.toLowerCase())}.pdf`
+}
+
+const getUrl = async (fileName) => {
+    // https://test-web-pdf.s3.eu-west-3.amazonaws.com/754dc77d28e62763c4916970d595a10f.pdf
+    return `https://${process.env.BUCKET_NAME}.${process.env.AWS_REGION}.amazonaws.com/${hashFilename(fileName)}`
 }
 
 const fileExists = async (fileName) => {
@@ -80,5 +86,6 @@ const putObject = async (fileName) => {
 }
 
 module.exports.fileExists = fileExists
+module.exports.getUrl = getUrl
 module.exports.putObject = putObject
 module.exports.setBucketLifeCycleConfiguration = setBucketLifeCycleConfiguration
