@@ -1,4 +1,4 @@
-const { putObject, fileExists } = require('./s3-utils')
+const { putObject, fileExists, getUrl } = require('./s3-utils')
 
 const fileName = 'test.pdf'
 const file2 = '170240.jpeg'
@@ -11,4 +11,6 @@ const file2 = '170240.jpeg'
     console.log(`File ${file2} should exist: ${data}`)
     data = await fileExists(fileName)
     console.log(`File ${fileName} should exist: ${data}`)
+    data = await getUrl(fileName)
+    console.log(`URL for ${fileName} is ${data}.`)
 })()
