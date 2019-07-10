@@ -11,7 +11,7 @@ const hashFilename = (fileName) => {
     return `${md5(fileName.toLowerCase())}.pdf`
 }
 
-const getUrl = async (fileName) => {
+const getUrl = (fileName) => {
     // https://test-web-pdf.s3.eu-west-3.amazonaws.com/754dc77d28e62763c4916970d595a10f.pdf
     return `https://${process.env.BUCKET_NAME}.${process.env.AWS_REGION}.amazonaws.com/${hashFilename(fileName)}`
 }
