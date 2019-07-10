@@ -13,7 +13,7 @@ const hashFilename = (fileName) => {
 
 const getUrl = (fileName) => {
     // https://test-web-pdf.s3.eu-west-3.amazonaws.com/754dc77d28e62763c4916970d595a10f.pdf
-    return `https://${process.env.BUCKET_NAME}.${process.env.AWS_REGION}.amazonaws.com/${hashFilename(fileName)}`
+    return `https://${process.env.BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${hashFilename(fileName)}`
 }
 
 const fileExists = async (fileName) => {
