@@ -73,9 +73,13 @@ const putObject = async (fileName) => {
     console.log(`we are in putObject for ${fileName}.`)
     try {
         const params = {
+            ACL: 'public-read',
             Bucket: bucketName, 
             Body: fs.createReadStream(fileName),
-            Key: hashFilename(fileName)
+            Key: hashFilename(fileName),
+            Metadata: {
+                "originalFilename": fileName
+               }
         }
         const data = await s3.putObject(params).promise()
         console.log(`we have uploaded ${hashFilename(fileName)}.`)
