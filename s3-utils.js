@@ -1,6 +1,6 @@
 require('dotenv').config()
 const AWS = require('aws-sdk')
-const fs= require('fs')
+const fs = require('fs')
 const md5 = require('md5')
 const s3 = new AWS.S3()
 
@@ -89,7 +89,4 @@ const putObject = async (fileName) => {
     }
 }
 
-module.exports.fileExists = fileExists
-module.exports.getUrl = getUrl
-module.exports.putObject = putObject
-module.exports.setBucketLifeCycleConfiguration = setBucketLifeCycleConfiguration
+module.exports = { fileExists, getUrl, putObject, setBucketLifeCycleConfiguration }
